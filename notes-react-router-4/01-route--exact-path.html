@@ -5,9 +5,7 @@
   <meta charset="utf-8">
   <title>React lab</title>
   <style type="text/less">
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {background: hsl(0,30%,95%);}
-
     button {
       padding: 5px;
     }
@@ -69,7 +67,7 @@ class MyApp extends React.Component {
           <hr />
           <Route path="/" component={(props) =><h3>{`props.location.pathname: ${props.location.pathname}`}</h3>} />
 
-          <hr/><h3>Below are matched <route/> with the exact flag</h3>
+          <hr/><h3>{`Below are matched <Route/> with the exact flag`}</h3>
           <div>
             <Route exact path="/"      component={()=>(<h4>exact path="/"     </h4>)} />
             <Route exact path="/a"     component={()=>(<h4>exact path="/a"    </h4>)} />
@@ -77,7 +75,7 @@ class MyApp extends React.Component {
             <Route exact path="/a/b/c" component={()=>(<h4>exact path="/a/b/c"</h4>)} />
           </div>
 
-          <hr/><h3>Below are matched <route/> without the exact flag</h3>
+          <hr/><h3>{`Below are matched <Route/> without the exact flag`}</h3>
           <div>
             <Route path="/"      component={()=>(<h4>path="/"     </h4>)} />
             <Route path="/a"     component={()=>(<h4>path="/a"    </h4>)} />

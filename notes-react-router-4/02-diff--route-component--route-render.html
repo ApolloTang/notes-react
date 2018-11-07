@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>React lab</title>
+  <style type="text/less">
+    body {background: hsl(0,30%,95%);}
+  </style>
+</head>
+
+<body>
+<div id="react-container"></div>
+
+<script src="http://localhost:9091/less/less-v2.7.2.min.js"></script>
+<script src="http://localhost:9091/babel/babel-standalone-v7.0.0-alpha.20.min.js"></script>
+<script src="http://localhost:9091/babel/babel-polyfill-v7.0.0-alpha.20.min.js"></script>
+
+<script src="http://localhost:9091/react/react-v16.6.0.development.js"></script>
+<script src="http://localhost:9091/react/react-dom-v16.6.0.development.js"></script>
+
+<!-- <script src="http://localhost:9091/react/react&#45;v15.1.0.js"></script> -->
+<!-- <script src="http://localhost:9091/react/react&#45;dom&#45;v15.1.0.js"></script> -->
+
+<script src="http://localhost:9091/react/react-router-v4.3.1.js"></script>
+<script src="http://localhost:9091/react/react-router-dom-v4.3.1.js"></script>
+
+<script src="http://localhost:9091/lodash/lodash-4.17.10.min.js"></script>
+
+<script>
+  console.log(`
+    _: version ${_.VERSION}
+    less: version ${less.version}
+    React: version ${React.version}
+  `);
+</script>
+
+<script type="text/babel" >
+// const Router = window.ReactRouterDOM.BrowserRouter;
+const Router = window.ReactRouterDOM.HashRouter;
+const Route =  window.ReactRouterDOM.Route;
+const Link =  window.ReactRouterDOM.Link;
+const Prompt =  window.ReactRouterDOM.Prompt;
+const Switch = window.ReactRouterDOM.Switch;
+const Redirect = window.ReactRouterDOM.Redirect;
+const NavLink = window.ReactRouterDOM.NavLink;
+
+class ClassComponent extends React.Component {
+  componentDidMount() {
+    console.log('[+] componentDidMount', this.props.msg);
+  }
+  componentWillUnmount() {
+    console.log('[-] componentwillUnMount', this.props.msg);
+  }
+  componentDidUpdate() {
+    console.log('[Δ] componentDidUpdate', this.props.msg);
+  }
+  render() { return <div>{`ClassComponent ${this.props.msg}`}</div>; }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div>
+
+          <ul>
+            <li><Link to="/component">via component</Link></li>
+            <li><Link to="/component-again">via component again</Link></li>
+
+            <li><Link to="/render">via render</Link></li>
+            <li><Link to="/render-again">via render again</Link></li>
+          </ul>
+
+          <Switch>
+            <Route exact path="/"          render={()=>null} />} />
+
+            {/* With inline function component will mount and unmount component */}
+            <Route path="/component"       component={()=><ClassComponent msg="via component"/>} />
+            <Route path="/component-again" component={()=><ClassComponent msg="via component again"/>} />
+
+            {/* With inline function render will Not mount and unmount component */}
+            <Route path="/render"       render={()=><ClassComponent msg="via render" />} />
+            <Route path="/render-again" render={()=><ClassComponent msg="via render again" />} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+
+
+const reactContainer = document.getElementById('react-container');
+ReactDOM.render(<App />, reactContainer);
+
+</script>
+</body>
+
+</html>
