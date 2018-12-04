@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>React lab</title>
+  <style type="text/less">
+    body {background: hsl(0,30%,95%);}
+  </style>
+</head>
+
+<body>
+<div id="react-container"></div>
+
+<script src="http://localhost:9091/less/less-v2.7.2.min.js"></script>
+<script src="http://localhost:9091/babel/babel-standalone-v7.0.0-alpha.20.min.js"></script>
+<script src="http://localhost:9091/babel/babel-polyfill-v7.0.0-alpha.20.min.js"></script>
+
+<script src="http://localhost:9091/react/react-v16.6.0.development.js"></script>
+<script src="http://localhost:9091/react/react-dom-v16.6.0.development.js"></script>
+
+<!-- <script src="http://localhost:9091/react/react&#45;v15.1.0.js"></script> -->
+<!-- <script src="http://localhost:9091/react/react&#45;dom&#45;v15.1.0.js"></script> -->
+
+<script src="http://localhost:9091/react/react-router-v4.3.1.js"></script>
+<script src="http://localhost:9091/react/react-router-dom-v4.3.1.js"></script>
+
+<script src="http://localhost:9091/lodash/lodash-4.17.10.min.js"></script>
+
+<script>
+  console.log(`
+    _: version ${_.VERSION}
+    less: version ${less.version}
+    React: version ${React.version}
+  `);
+</script>
+
+<script type="text/babel" >
+// const Router = window.ReactRouterDOM.BrowserRouter;
+const Router = window.ReactRouterDOM.HashRouter;
+const Route =  window.ReactRouterDOM.Route;
+const Link =  window.ReactRouterDOM.Link;
+const Prompt =  window.ReactRouterDOM.Prompt;
+const Switch = window.ReactRouterDOM.Switch;
+const Redirect = window.ReactRouterDOM.Redirect;
+const NavLink = window.ReactRouterDOM.NavLink;
+
+class ClassComponentOne extends React.Component {
+  componentDidMount() {
+    console.log('[+] componentDidMount......', this.props.msg);
+  }
+  componentWillUnmount() {
+    console.log('[-] componentwillUnMount...', this.props.msg);
+  }
+  componentDidUpdate() {
+    console.log('[Δ] componentDidUpdate.....', this.props.msg);
+  }
+  render() { return <h2>{`ClassComponentOne ${this.props.msg}`}</h2>; }
+}
+
+class ClassComponentTwo extends React.Component {
+  componentDidMount() {
+    console.log('[+] componentDidMount......', this.props.msg);
+  }
+  componentWillUnmount() {
+    console.log('[-] componentwillUnMount...', this.props.msg);
+  }
+  componentDidUpdate() {
+    console.log('[Δ] componentDidUpdate.....', this.props.msg);
+  }
+  render() { return <h2>{`ClassComponentTwo ${this.props.msg}`}</h2>; }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div>
+
+          <ul>
+            <li><Link to="/">reset path and render null</Link></li>
+          </ul>
+
+<code><pre>
+{`
+  When rendering inline function with "component":
+
+     <Route component={()=><MyComponent />}/>
+
+  if you are rendering the same component,
+  the rendered component will unmount between route change:
+  thus componentWillUnmount() will be called.
+`}
+</pre></code>
+
+          <ul>
+            <li><Link to="/component">via component, componentOne</Link></li>
+            <li><Link to="/component-again">via component again, componentOne</Link></li>
+            <li><Link to="/component-again-diff-component">via component, different component</Link></li>
+          </ul>
+
+<code><pre>
+{`
+  When rendering inline function with "render":
+
+     <Route render={()=><MyComponent />}/>
+
+  if you are rendering the same component,
+  the rendered component will NOT unmount between route change:
+  componentWillUnmout() will NOT called, but componentDidUpdate() will.
+`}
+</pre></code>
+
+          <ul>
+            <li><Link to="/render">via render, componentOne</Link></li>
+            <li><Link to="/render-again">via render again, componentOne</Link></li>
+            <li><Link to="/render-again-diff-component">via render, different component</Link></li>
+          </ul>
+
+          <Switch>
+            <Route exact path="/"          render={()=>null} />
+
+            {/* With inline function component will mount and unmount component */}
+            <Route path="/component"                      component={()=><ClassComponentOne msg="via component"/>} />
+            <Route path="/component-again"                component={()=><ClassComponentOne msg="via component again"/>} />
+            <Route path="/component-again-diff-component" component={()=><ClassComponentOne msg="via component, diff component"/>} />
+
+            {/* With inline function render will Not mount and unmount component */}
+            <Route path="/render"                      render={()=><ClassComponentOne msg="via render componentOne" />} />
+            <Route path="/render-again"                render={()=><ClassComponentOne msg="via render again componentOne" />} />
+            <Route path="/render-again-diff-component" render={()=><ClassComponentTwo msg="via render, diff component" />} />
+          </Switch>
+
+        </div>
+      </Router>
+    );
+  }
+}
+
+
+const reactContainer = document.getElementById('react-container');
+ReactDOM.render(<App />, reactContainer);
+
+</script>
+</body>
+
+</html>
